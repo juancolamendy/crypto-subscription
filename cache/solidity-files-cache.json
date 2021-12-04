@@ -74,8 +74,8 @@
       ]
     },
     "/Users/jcbox/Projects/dapp/crypto-subscription/contracts/MockToken.sol": {
-      "lastModificationDate": 1638568117527,
-      "contentHash": "00f71477e5dbf6b35928706469c84de3",
+      "lastModificationDate": 1638631973411,
+      "contentHash": "b4baa3a3778cebd041b8443d52481631",
       "sourceName": "contracts/MockToken.sol",
       "solcConfig": {
         "version": "0.8.6",

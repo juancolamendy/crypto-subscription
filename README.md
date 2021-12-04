@@ -7,7 +7,7 @@ npm init
 
 ## Add dependencies
 ```bash
-npm install --save ethers hardhat @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers @openzeppelin/contracts 
+npm install --save ethers hardhat @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers @openzeppelin/contracts @openzeppelin/test-helpers
 ```
 
 ## Init Solidity dev env
