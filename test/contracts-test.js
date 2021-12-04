@@ -1,10 +1,10 @@
 const { expect, assert } = require("chai");
 const { ethers } = require("hardhat");
 
-const { expectRevert, constants, time } = require('@openzeppelin/test-helpers');
+const { time } = require('@openzeppelin/test-helpers');
 
-const THIRTY_DAYS = time.duration.days(30); 
-const SIXTY_DAYS = time.duration.days(60); 
+const THIRTY_DAYS = time.duration.days(30);
+const SIXTY_DAYS = time.duration.days(60);
 
 describe("crypto-subscription", () => {
   // vars 
@@ -72,6 +72,49 @@ describe("crypto-subscription", () => {
     assert(subscription.subscriber === subscriber.address);
     assert(subscription.start.toString() === block.timestamp.toString());
     assert(subscription.nextPayment.toString() === (block.timestamp + 86400 * 30).toString());
+  });
+
+  it('should subscribe and pay', async () => {
+    // get accounts
+    const signers = await ethers.getSigners();
+    const merchant = signers[1];
+    const subscriber = signers[2];
+    
+    let balanceMerchant, balanceSubscriber;
+    
+    // merchant creates a plan
+    await payment.connect(merchant).createPlan(token.address, String(100), String(THIRTY_DAYS));
+
+    // subscriber subscribes to the created plan
+    await payment.connect(subscriber).subscribe(0);
+
+    // check balances
+    balanceMerchant = await token.balanceOf(merchant.address); 
+    balanceSubscriber = await token.balanceOf(subscriber.address); 
+    assert(balanceMerchant.toString() === '100');
+    assert(balanceSubscriber.toString() === '900');
+
+    await ethers.provider.send('evm_increaseTime', [31 * 24 * 60 * 60]);
+    await ethers.provider.send('evm_mine');
+
+    // make a payment
+    await payment.connect(merchant).pay(subscriber.address, 0);
+    // check balances
+    balanceMerchant = await token.balanceOf(merchant.address); 
+    balanceSubscriber = await token.balanceOf(subscriber.address); 
+    assert(balanceMerchant.toString() === '200');
+    assert(balanceSubscriber.toString() === '800');
+
+    await ethers.provider.send('evm_increaseTime', [31 * 24 * 60 * 60]);
+    await ethers.provider.send('evm_mine');
+    
+    // make a payment
+    await payment.connect(merchant).pay(subscriber.address, 0);
+    // check balances
+    balanceMerchant = await token.balanceOf(merchant.address); 
+    balanceSubscriber = await token.balanceOf(subscriber.address); 
+    assert(balanceMerchant.toString() === '300');
+    assert(balanceSubscriber.toString() === '700');
   });
 
 })
