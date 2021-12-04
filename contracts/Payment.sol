@@ -80,14 +80,13 @@ contract Payment {
 
   // function call by buyers/subscribers
   function subscribe(uint planId) external {
-    // create a reference to the token contract
-    IERC20 token = IERC20(plans[planId].token);
-    
     // validations
     // check the plan exists
     Plan storage plan = plans[planId];
     require(plan.merchant != address(0), 'this plan does not exist');
 
+    // create a reference to the token contract
+    IERC20 token = IERC20(plan.token);
     // transfer tokens from the subscriber to the merchants
     // this is the first payment of the subscription
     token.transferFrom(msg.sender, plan.merchant, plan.amount);  

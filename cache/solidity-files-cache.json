@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/jcbox/Projects/dapp/crypto-subscription/contracts/Payment.sol": {
-      "lastModificationDate": 1638567933390,
-      "contentHash": "f584eeedeb042c43abc6e719b7b0e243",
+      "lastModificationDate": 1638635188056,
+      "contentHash": "2ae665c91dc05fe649f6fe5a859357e4",
       "sourceName": "contracts/Payment.sol",
       "solcConfig": {
         "version": "0.8.6",
