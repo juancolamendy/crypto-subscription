@@ -117,4 +117,20 @@ describe("crypto-subscription", () => {
     assert(balanceSubscriber.toString() === '700');
   });
 
+  it('should cancel subscription', async () => {
+    // get accounts
+    const signers = await ethers.getSigners();
+    const merchant = signers[1];
+    const subscriber = signers[2];
+    
+    // merchant creates a plan
+    await payment.connect(merchant).createPlan(token.address, String(100), String(THIRTY_DAYS));
+
+    // subscriber subscribes to the created plan
+    await payment.connect(subscriber).subscribe(0);
+
+    // subscriber cancels subscription
+    await payment.connect(subscriber).cancel(0);
+  });
+
 })
